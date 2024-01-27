@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyramide 3D avec Emission Lumineuse</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://threejs.org/build/three.js"></script>
+  <script>
+    // Initialiser la scène
+    var scene = new THREE.Scene();
+
+    // Initialiser la caméra
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5);
+
+    // Initialiser le rendu
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Créer une pyramide
+    var geometry = new THREE.ConeGeometry(1, 2, 4);
+
+    // Utiliser un matériau standard avec émission lumineuse
+    var material = new THREE.MeshStandardMaterial({
+      color: 0xff00ff,
+      emissive: 0xff00ff, // Couleur d'émission
+      emissiveIntensity: 1 // Intensité de l'émission
+    });
+
+    // Utiliser une texture pour un aspect plus réaliste (remplacez l'URL par votre propre texture)
+    // var texture = new THREE.TextureLoader().load('path/to/your/texture.jpg');
+    // var material = new THREE.MeshStandardMaterial({ map: texture, emissive: 0xffffff, emissiveIntensity: 1 });
+
+    var pyramid = new THREE.Mesh(geometry, material);
+
+    // Ajouter la pyramide à la scène
+    scene.add(pyramid);
+
+    // Ajouter un éclairage pour rendre la scène plus réaliste
+    var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    var pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    // Fonction pour faire tourner la pyramide
+    function rotatePyramid() {
+      pyramid.rotation.x += 0.005;
+      pyramid.rotation.y += 0.005;
+    }
+
+    // Fonction d'animation
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Appeler la fonction pour faire tourner la pyramide
+      rotatePyramid();
+
+      // Rendre la scène
+      renderer.render(scene, camera);
+    }
+
+    // Appeler la fonction d'animation
+    animate();
+  </script>
+</body>
+</html>
